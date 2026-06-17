@@ -110,36 +110,6 @@ EXPOSE 8000
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
 ```
 
----
-
-### 4단계 — .env.example 생성
-
-프로젝트 루트에 `.env.example`을 생성하세요:
-
-```env
-# Database
-MYSQL_ROOT_PASSWORD=rootpassword
-MYSQL_DATABASE=neeews
-MYSQL_USER=neeews_user
-MYSQL_PASSWORD=neeews_password
-
-# FastAPI
-SECRET_KEY=your-secret-key-here-change-in-production
-ALGORITHM=HS256
-ACCESS_TOKEN_EXPIRE_MINUTES=30
-
-# Mail
-MAIL_USERNAME=your-email@example.com
-MAIL_PASSWORD=your-email-password
-MAIL_FROM=your-email@example.com
-MAIL_PORT=587
-MAIL_SERVER=smtp.gmail.com
-MAIL_FROM_NAME=Neeews
-
-# App
-APP_URL=http://localhost:8000
-```
-
 ### 주의사항
 
 - `DATABASE_URL`은 `docker-compose.yml`에서 `environment`로 주입되므로 `.env`에 별도로 설정하지 않아도 됩니다.
