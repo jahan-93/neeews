@@ -4,7 +4,7 @@ services:
     container_name: neeews-db
     restart: unless-stopped
     env_file:
-      - back-end/.env
+      - .env
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
@@ -28,7 +28,7 @@ services:
     restart: unless-stopped
     working_dir: /app/back-end
     env_file:
-      - back-end/.env
+      - .env
     environment:
       DATABASE_URL: mysql+aiomysql://${MYSQL_USER}:${MYSQL_PASSWORD}@db:3306/${MYSQL_DATABASE}
     ports:
