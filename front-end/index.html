@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 뉴스 요약 서비스</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- 1. 상단 내비게이션 바 (카테고리) -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo" onclick="filterCategory('전체')">📰 뉴스요약</a>
+            <ul class="nav-menu">
+                <li><a href="#" onclick="filterCategory('전체')" class="cat-link active">전체</a></li>
+                <li><a href="#" onclick="filterCategory('정치')" class="cat-link">정치</a></li>
+                <li><a href="#" onclick="filterCategory('경제')" class="cat-link">경제</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- 2. 메인 컨텐츠 영역 -->
+    <main class="main-layout">
+        
+        <!-- 왼쪽 사이드바: 키워드 랭킹 -->
+        <aside class="sidebar-left">
+            <div class="ranking-box">
+                <h3>🔥 실시간 언급 키워드</h3>
+                <ol id="keyword-ranking">
+                    <!-- 백엔드 연동 시 동적으로 삽입될 영역 -->
+                    <li><span class="rank">1</span> 로딩 중...</li>
+                </ol>
+            </div>
+        </aside>
+
+        <!-- 중앙/우측: 최신 뉴스 그리드 영역 (가로 최대 4개, 세로로 누적) -->
+        <section class="news-section">
+            <h2>최신 요약 뉴스</h2>
+            <div class="news-grid" id="news-grid-container">
+                <!-- 백엔드 연동 시 동적으로 삽입될 영역 -->
+                <div class="loading">뉴스를 불러오는 중입니다...</div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 모달(상세 기사) 창 영역 추가 -->
+    <div id="news-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <div class="modal-header">
+                <span id="modal-source" class="news-source">언론사</span>
+                <span id="modal-date" class="news-date">날짜</span>
+            </div>
+            <h2 id="modal-title">기사 제목</h2>
+            <div id="modal-summary" class="modal-summary">요약 내용</div>
+            <div class="modal-body">
+                <p id="modal-full-text">기사 본문 전체 내용이 여기에 표시됩니다.</p>
+            </div>
+            <div class="modal-footer">
+                <a id="modal-link" href="#" target="_blank" class="read-more-btn">원문 기사 보러가기</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s --max-time 10 \"https://www.yna.co.kr/rss/news.xml\")",
+      "Bash(pkill -f \"uvicorn main:app\")",
+      "Bash(nohup ../venv/bin/uvicorn main:app --host 0.0.0.0 --port 8000)",
+      "Bash(disown)",
+      "Read(//tmp/**)",
+      "Bash(curl -s http://localhost:8000/)",
+      "Bash(curl -s http://localhost:8000/docs)",
+      "Bash(curl -sv \"http://localhost:8000/news?category=%EC%A0%84%EC%B2%B4\")",
+      "Bash(curl -s \"http://localhost:8000/news?category=%EC%A0%95%EC%B9%98\")",
+      "Bash(python3 -c ' *)",
+      "Bash(curl -s \"http://localhost:8000/news?category=%EA%B2%BD%EC%A0%9C\")",
+      "Bash(npm run *)",
+      "Bash(bun run *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Bash(git status)"
+    ],
+    "deny" : [
+      "Bash(rm -rf *)"
+    ]
+  }
+}

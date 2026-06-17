@@ -1,0 +1,340 @@
+/* 전반적인 스타일 초기화 및 기본 세팅 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+body {
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+/* 1. 상단 내비게이션 바 */
+.navbar {
+    background-color: #ffffff;
+    border-bottom: 1px solid #e9ecef;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #212529;
+    text-decoration: none;
+}
+
+.nav-menu {
+    display: flex;
+    list-style: none;
+    gap: 20px;
+}
+
+.nav-menu a {
+    text-decoration: none;
+    color: #495057;
+    font-weight: 500;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.nav-menu a:hover {
+    background-color: #f1f3f5;
+    color: #1c7ed6;
+}
+
+.nav-menu a.active {
+    background-color: #1c7ed6;
+    color: #fff;
+}
+
+.loading {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px;
+    color: #adb5bd;
+    font-size: 1rem;
+}
+
+/* 2. 메인 레이아웃 (왼쪽 사이드바 + 뉴스 그리드) */
+.main-layout {
+    max-width: 1400px;
+    margin: 30px auto;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: 280px 1fr; /* 사이드바 280px, 나머지는 뉴스 영역 */
+    gap: 30px;
+}
+
+/* 3. 왼쪽 키워드 랭킹 사이드바 */
+.sidebar-left {
+    position: sticky;
+    top: 90px; /* 내비게이션 바 높이 고려 */
+    height: fit-content;
+}
+
+.ranking-box {
+    background-color: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.ranking-box h3 {
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+    color: #212529;
+    border-bottom: 2px solid #edf2f7;
+    padding-bottom: 10px;
+}
+
+.ranking-box ol {
+    list-style: none;
+}
+
+.ranking-box li {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    font-size: 0.95rem;
+    border-bottom: 1px solid #f1f3f5;
+    cursor: pointer;
+}
+
+.ranking-box li:hover {
+    color: #1c7ed6;
+}
+
+.ranking-box .rank {
+    font-weight: bold;
+    color: #1c7ed6;
+    width: 25px;
+}
+
+/* 4. 뉴스 그리드 영역 (가로 최대 4개 세팅) */
+.news-section h2 {
+    font-size: 1.4rem;
+    margin-bottom: 20px;
+}
+
+.news-grid {
+    display: grid;
+    /* 가로로 최대 4개(minmax를 조절해 4개 채우고 부족하면 반응형 동작) */
+    grid-template-columns: repeat(auto-fill, minmax(24%, 1fr)); 
+    gap: 20px;
+}
+
+/* 뉴스 카드 스타일 */
+.news-card {
+    background-color: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.news-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+}
+
+.news-img {
+    width: 100%;
+    height: 150px;
+    background-color: #e9ecef;
+    object-fit: cover;
+}
+
+.news-content {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.news-category {
+    font-size: 0.75rem;
+    color: #1c7ed6;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.news-title {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    line-height: 1.4;
+}
+
+.news-summary {
+    font-size: 0.85rem;
+    color: #666;
+    line-height: 1.5;
+    margin-bottom: 15px;
+    /* 3줄까지만 보이고 말줄임표 처리 */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.news-date {
+    font-size: 0.75rem;
+    color: #adb5bd;
+    margin-top: auto; /* 날짜를 카드 가장 아래로 밀어냄 */
+}
+
+/* 반응형 처리 (화면이 작아지면 가로 개수 조정) */
+@media (max-width: 1200px) {
+    .news-grid { grid-template-columns: repeat(auto-fill, minmax(31%, 1fr)); }
+}
+@media (max-width: 900px) {
+    .main-layout { grid-template-columns: 1fr; }
+    .sidebar-left { position: static; }
+    .news-grid { grid-template-columns: repeat(auto-fill, minmax(48%, 1fr)); }
+}
+@media (max-width: 500px) {
+    .news-grid { grid-template-columns: 1fr; }
+}
+/* --- 추가된 스타일: 뉴스 출처 --- */
+.news-source {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #495057;
+    background-color: #f1f3f5;
+    padding: 3px 8px;
+    border-radius: 4px;
+    margin-right: 8px;
+    display: inline-block;
+}
+
+.news-meta {
+    display: flex;
+    align-items: center;
+    margin-top: auto; /* 카드 하단으로 밀어내기 */
+    padding-top: 10px;
+}
+
+/* 카드에 커서 포인터 추가 */
+.news-card {
+    cursor: pointer;
+}
+
+/* --- 추가된 스타일: 모달(Modal) 팝업 --- */
+.modal-overlay {
+    display: none; /* 기본적으로 숨김 */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(3px); /* 배경 살짝 흐리게 */
+}
+
+/* 모달이 열릴 때 표시할 클래스 */
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal-content {
+    background-color: #fff;
+    width: 90%;
+    max-width: 700px;
+    max-height: 85vh;
+    border-radius: 12px;
+    padding: 30px;
+    position: relative;
+    overflow-y: auto; /* 내용이 길면 스크롤 */
+    box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.close-btn {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    font-size: 1.8rem;
+    color: #868e96;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.close-btn:hover {
+    color: #212529;
+}
+
+.modal-header {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.modal-content h2 {
+    font-size: 1.5rem;
+    line-height: 1.4;
+    margin-bottom: 15px;
+    color: #212529;
+}
+
+.modal-summary {
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: #1c7ed6;
+    background-color: #e7f5ff;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.modal-body {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #495057;
+    margin-bottom: 30px;
+}
+
+.modal-footer {
+    text-align: right;
+    border-top: 1px solid #e9ecef;
+    padding-top: 20px;
+}
+
+.read-more-btn {
+    display: inline-block;
+    background-color: #212529;
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.read-more-btn:hover {
+    background-color: #343a40;
+}
