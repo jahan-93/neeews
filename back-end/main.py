@@ -5,6 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from core.database import Base, engine
 from features.auth.router import router as auth_router
+from features.keywords.router import router as keywords_router
 from features.news.router import router as news_router
 
 
@@ -30,6 +31,7 @@ app.add_middleware(
 
 app.include_router(auth_router)
 app.include_router(news_router)
+app.include_router(keywords_router)
 
 
 @app.get("/", tags=["Health"])

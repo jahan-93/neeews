@@ -1,0 +1,52 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: neeews-db
+    restart: unless-stopped
+    env_file:
+      - back-end/.env
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: .
+      dockerfile: back-end/Dockerfile
+    container_name: neeews-backend
+    restart: unless-stopped
+    working_dir: /app/back-end
+    env_file:
+      - back-end/.env
+    environment:
+      DATABASE_URL: mysql+aiomysql://${MYSQL_USER}:${MYSQL_PASSWORD}@db:3306/${MYSQL_DATABASE}
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend:
+    image: nginx:alpine
+    container_name: neeews-frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./front-end:/usr/share/nginx/html:ro
+    depends_on:
+      - backend
+
+volumes:
+  mysql_data:

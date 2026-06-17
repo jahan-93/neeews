@@ -9,3 +9,4 @@ bcrypt<4.1
 python-jose[cryptography]
 fastapi-mail
 python-dotenv
+kiwipiepy

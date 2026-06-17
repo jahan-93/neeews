@@ -1,5 +1,5 @@
 const API_BASE_URL = "http://localhost:8000";
-let currentCategory = "전체";
+let currentSource = "전체";
 
 // ── 유틸 ────────────────────────────────────────────────────────────────────
 
@@ -17,24 +17,23 @@ function timeAgo(pubDateStr) {
 
 document.addEventListener("DOMContentLoaded", () => {
     fetchNews("전체");
+    fetchKeywords("전체");
 });
 
 // ── 뉴스 카드 렌더링 ────────────────────────────────────────────────────────
 
-async function fetchNews(category = "전체") {
-    currentCategory = category;
+async function fetchNews(source = "전체") {
+    currentSource = source;
 
-    // 카테고리 탭 활성화
-    document.querySelectorAll(".cat-link").forEach(a => {
-        const label = a.textContent.trim();
-        a.classList.toggle("active", label === category);
+    document.querySelectorAll(".src-link").forEach(a => {
+        a.classList.toggle("active", a.textContent.trim() === source);
     });
 
     const gridContainer = document.getElementById("news-grid-container");
     gridContainer.innerHTML = '<div class="loading">뉴스를 불러오는 중입니다...</div>';
 
     try {
-        const res = await fetch(`${API_BASE_URL}/news?category=${encodeURIComponent(category)}`);
+        const res = await fetch(`${API_BASE_URL}/news?source=${encodeURIComponent(source)}`);
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
 
@@ -42,7 +41,7 @@ async function fetchNews(category = "전체") {
 
         if (!data.articles || data.articles.length === 0) {
             gridContainer.innerHTML =
-                '<div style="grid-column:1/-1;text-align:center;padding:50px;color:#888;">해당 카테고리의 뉴스가 없습니다.</div>';
+                '<div style="grid-column:1/-1;text-align:center;padding:50px;color:#888;">해당 언론사의 뉴스가 없습니다.</div>';
             return;
         }
 
@@ -50,8 +49,8 @@ async function fetchNews(category = "전체") {
             const item = {
                 title:      article.title,
                 link:       article.link,
+                source:     article.source,
                 category:   article.category,
-                source:     "연합뉴스",
                 date:       timeAgo(article.pub_date),
                 img:        article.image_url || "",
                 summary:    article.description,
@@ -69,11 +68,10 @@ async function fetchNews(category = "전체") {
             card.innerHTML = `
                 ${imgHtml}
                 <div class="news-content">
-                    <span class="news-category">${item.category}</span>
+                    <span class="news-category">${item.source}</span>
                     <h4 class="news-title">${item.title}</h4>
                     <p class="news-summary">${item.summary}</p>
                     <div class="news-meta">
-                        <span class="news-source">${item.source}</span>
                         <span class="news-date">${item.date}</span>
                     </div>
                 </div>`;
@@ -88,7 +86,7 @@ async function fetchNews(category = "전체") {
                 <p style="font-size:0.85rem;margin-top:5px;color:#adb5bd;">
                     백엔드 서버(http://localhost:8000)가 실행 중인지 확인해주세요.
                 </p>
-                <button onclick="fetchNews('${currentCategory}')"
+                <button onclick="fetchNews('${currentSource}')"
                     style="margin-top:15px;padding:8px 20px;background:#1c7ed6;color:#fff;
                            border:none;border-radius:6px;cursor:pointer;font-size:0.9rem;">
                     다시 시도
@@ -97,15 +95,48 @@ async function fetchNews(category = "전체") {
     }
 }
 
-function filterCategory(category) {
-    fetchNews(category);
+function filterSource(source) {
+    fetchNews(source);
+    fetchKeywords(source);
+}
+
+// ── 키워드 랭킹 ─────────────────────────────────────────────────────────────
+
+async function fetchKeywords(source = "전체") {
+    const listEl = document.getElementById("keyword-ranking");
+    listEl.innerHTML = '<li><span class="rank">—</span> <span class="kw-text">분석 중...</span></li>';
+
+    try {
+        const res = await fetch(`${API_BASE_URL}/keywords?source=${encodeURIComponent(source)}`);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+
+        if (!data.keywords || data.keywords.length === 0) {
+            listEl.innerHTML = '<li><span class="rank">—</span> <span class="kw-text">키워드 없음</span></li>';
+            return;
+        }
+
+        listEl.innerHTML = data.keywords
+            .map((item, i) => `
+                <li>
+                    <span class="rank">${i + 1}</span>
+                    <span class="kw-text">${item.keyword}</span>
+                    <span class="kw-count">${item.count}</span>
+                </li>`)
+            .join("");
+    } catch {
+        listEl.innerHTML = '<li><span class="rank">—</span> <span class="kw-text">불러오기 실패</span></li>';
+    }
 }
 
 // ── 모달 ────────────────────────────────────────────────────────────────────
 
 function openModal(item) {
-    document.getElementById("modal-source").innerText = item.source || "연합뉴스";
-    document.getElementById("modal-date").innerText   = item.date;
+    document.getElementById("modal-source").innerText = item.source;
+    const catEl = document.getElementById("modal-category");
+    catEl.textContent = item.category || "";
+    catEl.style.display = item.category ? "inline-block" : "none";
+    document.getElementById("modal-date").innerText = item.date;
     document.getElementById("modal-title").innerText  = item.title;
     document.getElementById("modal-summary").innerText = item.summary;
 

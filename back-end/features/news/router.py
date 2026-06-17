@@ -7,10 +7,9 @@ router = APIRouter(prefix="/news", tags=["News"])
 
 
 @router.get("", response_model=NewsListResponse)
-async def get_news(category: str = Query(default="전체")):
-    if category not in service.CATEGORY_URLS:
-        valid = list(service.CATEGORY_URLS.keys())
-        raise HTTPException(status_code=400, detail=f"category는 {valid} 중 하나여야 합니다.")
+async def get_news(source: str = Query(default="전체")):
+    if source not in service.SOURCES:
+        raise HTTPException(status_code=400, detail=f"source는 {service.SOURCES} 중 하나여야 합니다.")
 
-    articles = await service.fetch_articles(category)
-    return {"category": category, "articles": articles}
+    articles = await service.fetch_articles(source)
+    return {"source": source, "articles": articles}

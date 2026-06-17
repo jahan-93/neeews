@@ -8,19 +8,19 @@
       "Read(//tmp/**)",
       "Bash(curl -s http://localhost:8000/)",
       "Bash(curl -s http://localhost:8000/docs)",
-      "Bash(curl -sv \"http://localhost:8000/news?category=%EC%A0%84%EC%B2%B4\")",
-      "Bash(curl -s \"http://localhost:8000/news?category=%EC%A0%95%EC%B9%98\")",
       "Bash(python3 -c ' *)",
-      "Bash(curl -s \"http://localhost:8000/news?category=%EA%B2%BD%EC%A0%9C\")",
       "Bash(npm run *)",
       "Bash(bun run *)",
       "Bash(git add *)",
       "Bash(git commit *)",
       "Bash(git diff *)",
       "Bash(git log *)",
-      "Bash(git status)"
+      "Bash(git status)",
+      "Bash(venv/bin/pip install *)",
+      "Bash(venv/bin/python -c ' *)",
+      "Bash(venv/bin/python3.14 -c ' *)"
     ],
-    "deny" : [
+    "deny": [
       "Bash(rm -rf *)"
     ]
   }
